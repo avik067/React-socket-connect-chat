@@ -9,7 +9,7 @@ function App() {
    
   const  [sms,setSms]= useState({currentList:[{data: "erhget", name:"Israel Hagenes",place: "Port Maxiebury"}], currentValue :"",errMsg:"",place:'',name:''})
   const [socket, setSocket] = useState(null)
-  const {currentList,currentValue,place,name} = sms
+  const {currentList,currentValue} = sms
 
   const changeState = (event) => {
     const newVal = event.target.value
@@ -24,16 +24,11 @@ function App() {
     
   if (socket && message) {
     socket.emit('new-message', message);
-    
+    setSms ({...sms,currentList:[...sms.currentList,{data: message, name:"",place: ""}],currentValue:"" })
   }
-   
   
-
-    
   
-
-    // setSms ({...sms,currentList:[...sms.currentList,currentValue],currentValue:"" })
-    // currentList:[...sms.currentList,currentValue],
+  
   }
   
   const conncetToSer = () => {
@@ -51,7 +46,8 @@ function App() {
       const jsonData = JSON.parse(data)
       console.log(jsonData)
       const messageData = jsonData.data
-      setSms({...sms,currentList:[...sms.currentList,messageData],currentValue:"" ,place:jsonData.place,name:jsonData.name})
+     
+      setSms({...sms,currentList:[...sms.currentList,jsonData],currentValue:"" })
     });
 
     socketInstance.on("server" ,(msg)=> {
