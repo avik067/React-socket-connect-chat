@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+  background-color: black;
+  height: 100vh;
+}
+.main-chat-box{
+  border:3px solid yellow;
+  border-radius:10px ;
+  height: 80%;
+  overflow-y: auto;
+}
+.sms{
+  background-color: aquamarine;
+  color:black;
+  font-family: roboto;
+  font-size:15px;
+  border-radius: 5px;
+  border:2px solid black ;
+  padding: 5px;
+}
+.input-box{
+  width:80%;
+  height: 20px;
+  margin-top:10px ;
+}
+.ping{
+  background-color: bisque;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  margin-inline: 5px;
+}
+ul{
+  padding: 0px;
+}
+li{
+  list-style: none;
+}
