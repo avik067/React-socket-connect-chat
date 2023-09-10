@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 function App() {
    
    
-  const  [sms,setSms]= useState({currentList:[{data: "erhget", name:"Israel Hagenes",place: "Port Maxiebury"}], currentValue :"",errMsg:"",place:'',name:''})
+  const  [sms,setSms]= useState({currentList:[], currentValue :"",errMsg:"",place:'',name:''})
   const [socket, setSocket] = useState(null)
   const {currentList,currentValue} = sms
 
@@ -39,7 +39,7 @@ function App() {
   
   const conncetToSer = () => {
     
-            const socketInstance = io('http://localhost:5005/');
+            const socketInstance = io('https://my-socket-api.adaptable.app/');
             setSocket(socketInstance);
             
               // listen for events emitted by the server
@@ -79,17 +79,18 @@ function App() {
   return (
           <div className="App">
             <div className='main-chat-box'>
+            <h3 className='heading'>Chat box..</h3>
+            <hr/>
               <ul>
                   {currentList.map(each => <li className='sms' key={uuidv4()}>{each.data} <br/> {`name : ${each.name}`}<br />
                   {`place : ${each.place}`}</li>)}
               </ul>
             </div>
             <form onSubmit={sumitToState}>
-            <input className='input-box' type="text" value={currentValue} onChange={changeState}/>
+            <input className='input-box' type="text" value={currentValue} onChange={changeState} placeholder="type here"/>
             <button className='ping'  type="submit" >send</button>
             </form>
-            
-            
+          
           </div>
   );
 }
