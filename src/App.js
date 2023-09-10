@@ -9,9 +9,10 @@ function App() {
    
   const  [sms,setSms]= useState({currentList:[], currentValue :""})
   const [socket, setSocket] = useState(null)
-  const {currentList,currentValue} = sms
+  
 
   const changeState = (event) => {
+    
           const newVal = event.target.value
           setSms({...sms,currentValue:newVal})
   }
@@ -20,7 +21,8 @@ function App() {
 
   const sumitToState = (event) => {
               event.preventDefault()
-              const message = currentValue
+              
+              const message = sms.currentValue
               
               if (socket && message) {
                           socket.emit('new-message', message);
@@ -28,9 +30,10 @@ function App() {
                           socket.on('message-back', (data) => {
                                       // console.log(data);
                                       const jsonData = JSON.parse(data)
-                                      console.log(jsonData)
-                                      // const messageData = jsonData.data                                     
-                                      setSms({...sms,currentList:[...sms.currentList,jsonData],currentValue:"" })
+                                      // console.log(jsonData)
+                                      // const messageData = jsonData.data 
+                                      setSms( pre => ({...sms,currentList:[...pre.currentList,jsonData],currentValue:""}))                                    
+                                      
                           });
                 
               }
@@ -41,11 +44,12 @@ function App() {
 
  ////////////////////////////
  const getFromDb = async() => {
+          
           const url = "https://my-socket-api.adaptable.app/getsort"
                 try {
                   const rowData = await fetch(url)
                   const jsonData = await rowData.json()
-                  console.log(jsonData)
+                  // console.log(jsonData)
                   jsonData.reverse() ;
                   setSms({...sms,currentList:jsonData})
                 }
@@ -73,8 +77,7 @@ function App() {
                 // console.log(data);
                 const jsonDataBroad = JSON.parse(data)
                 console.log(jsonDataBroad)
-                getFromDb()
-                // setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
+                setSms( pre => ({...sms,currentList:[...pre.currentList,jsonDataBroad]}))
                })
             
           return () => {
@@ -91,33 +94,41 @@ function App() {
 
 
 
-  return (
-          <div className="App">
-            <div className='main-chat-box'>
-            <h3 className='heading'>Chat box..</h3>
-            <hr/>
-              <ul >
-                  {currentList.map(each => <li className='sms' key={uuidv4()}>
-                  {each.data}
-                    <hr/>
-                    <ul className='info row apart'>
-                       <li>{`name : ${each.name}`}</li>
-                       <li>{`place : ${each.place}`}</li>
-                       <li>{`time UTC: ${each.date }`}</li>
-                    </ul>
+ const renderEl = () => {
+  const {currentList,currentValue} = sms
 
-                  
-                  
-                  </li>)}
-              </ul >
-            </div>
-            <form onSubmit={sumitToState}>
-            <input className='input-box' type="text" value={currentValue} onChange={changeState} placeholder="type here"/>
-            <button className='ping'  type="submit" >send</button>
-            </form>
-    
-          </div>
-  );
+   return (
+    <div className="App">
+    <div className='main-chat-box'>
+    <h3 className='heading'>Chat box..</h3>
+    <hr/>
+      <ul >
+          {currentList.map(each => <li className='sms' key={uuidv4()}>
+          {each.data}
+            <hr/>
+            <ul className='info row apart'>
+               <li>{`name : ${each.name}`}</li>
+               <li>{`place : ${each.place}`}</li>
+               <li>{`time UTC: ${each.date }`}</li>
+            </ul>
+
+          
+          
+          </li>)}
+      </ul >
+    </div>
+    <form onSubmit={sumitToState}>
+    <input className='input-box' type="text" value={currentValue} onChange={changeState} placeholder="type here"/>
+    <button className='ping'  type="submit" >send</button>
+    </form>
+
+  </div>
+   )
+
+ }
+
+
+  return renderEl()
 }
 
 export default App;
