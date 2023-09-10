@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 function App() {
    
    
-  const  [sms,setSms]= useState({currentList:[], currentValue :"",errMsg:"",place:'',name:''})
+  const  [sms,setSms]= useState({currentList:[], currentValue :"",errMsg:""})
   const [socket, setSocket] = useState(null)
   const {currentList,currentValue} = sms
 
@@ -15,6 +15,8 @@ function App() {
           const newVal = event.target.value
           setSms({...sms,currentValue:newVal})
   }
+
+ 
 
   const sumitToState = (event) => {
               event.preventDefault()
@@ -27,35 +29,21 @@ function App() {
                                       // console.log(data);
                                       const jsonData = JSON.parse(data)
                                       console.log(jsonData)
-                                      // const messageData = jsonData.data
-                                    
+                                      // const messageData = jsonData.data                                     
                                       setSms({...sms,currentList:[...sms.currentList,jsonData],currentValue:"" })
                           });
-
-                          // setSms ({...sms,currentList:[...sms.currentList,{data: message, name:"",place: ""}],currentValue:"" })
+                
               }
   
        }
   
   const conncetToSer = () => {
     
-            const socketInstance = io('https://my-socket-api.adaptable.app/');
+            const socketInstance = io('http://localhost:5005/');
             setSocket(socketInstance);
             
               // listen for events emitted by the server
             
-              // socketInstance.on('connection', () => {
-              //   console.log('Connected to server');
-              // });
-            
-              // socketInstance.on('message-back', (data) => {
-              //   // console.log(data);
-              //   const jsonData = JSON.parse(data)
-              //   console.log(jsonData)
-              //   const messageData = jsonData.data
-              
-              //   // setSms({...sms,currentList:[...sms.currentList,jsonData],currentValue:"" })
-              // });
 
               socketInstance.on("server" ,(msg)=> {
                 console.log(`from server : ${msg}`)
@@ -74,6 +62,19 @@ function App() {
     conncetToSer()
 
   } ,[])
+
+  useEffect(()=>{
+
+    if (socket ) {
+    socket.on('broadcast', (data) => {
+                  // console.log(data);
+                  const jsonDataBroad = JSON.parse(data)
+                  console.log(jsonDataBroad)
+                
+                  setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
+      });
+    }
+  } ,[socket])
 
 
   return (
