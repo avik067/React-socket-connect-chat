@@ -8,12 +8,14 @@
   border-radius:10px ;
   height: 80%;
   overflow-y: auto;
+  
 }
 .heading{
     color :bisque ;
     font-family: 'Lucida Sans Unicode'
     /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
 }
+
 .sms{
   background-color: aquamarine;
   color:black;

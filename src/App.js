@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 function App() {
    
    
-  const  [sms,setSms]= useState({currentList:[], currentValue :"",errMsg:""})
+  const  [sms,setSms]= useState({currentList:[], currentValue :""})
   const [socket, setSocket] = useState(null)
   const {currentList,currentValue} = sms
 
@@ -55,7 +55,6 @@ function App() {
 }
  
 
-
   const conncetToSer =  () => {
        
            
@@ -69,8 +68,15 @@ function App() {
               socketInstance.on("server" ,(msg)=> {
                 console.log(`from server : ${msg}`)
               })
+              
+              socketInstance.on('broadcast', (data) => {
+                // console.log(data);
+                const jsonDataBroad = JSON.parse(data)
+                console.log(jsonDataBroad)
+                getFromDb()
+                // setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
+               })
             
-             
           return () => {
             if (socketInstance) {
               socketInstance.disconnect();
@@ -81,31 +87,7 @@ function App() {
 
   useEffect(()=>{
     conncetToSer()
-     
-    if (socket) {
-      socket.on('broadcast', (data) => {
-                    // console.log(data);
-                    const jsonDataBroad = JSON.parse(data)
-                    console.log(jsonDataBroad)
-                  
-                    setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
-        });
-      }
-
   } ,[])
-
-  useEffect(()=>{
-
-    if (socket) {
-    socket.on('broadcast', (data) => {
-                  // console.log(data);
-                  const jsonDataBroad = JSON.parse(data)
-                  console.log(jsonDataBroad)
-                  getFromDb()
-                  
-      });
-    }
-  } ,[socket])
 
 
   return (
@@ -113,16 +95,16 @@ function App() {
             <div className='main-chat-box'>
             <h3 className='heading'>Chat box..</h3>
             <hr/>
-              <ul>
+              <ul >
                   {currentList.map(each => <li className='sms' key={uuidv4()}>{each.data} <br/> {`name : ${each.name}`}<br />
                   {`place : ${each.place}`}</li>)}
-              </ul>
+              </ul >
             </div>
             <form onSubmit={sumitToState}>
             <input className='input-box' type="text" value={currentValue} onChange={changeState} placeholder="type here"/>
             <button className='ping'  type="submit" >send</button>
             </form>
-          
+    
           </div>
   );
 }
