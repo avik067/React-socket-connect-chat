@@ -96,8 +96,19 @@ function App() {
             <h3 className='heading'>Chat box..</h3>
             <hr/>
               <ul >
-                  {currentList.map(each => <li className='sms' key={uuidv4()}>{each.data} <br/> {`name : ${each.name}`}<br />
-                  {`place : ${each.place}`}</li>)}
+                  {currentList.map(each => <li className='sms' key={uuidv4()}>
+                  {each.data}
+                    <hr/>
+                    <ul className='info row apart'>
+                       <li>{`name : ${each.name}`}</li>
+                       <li>{`place : ${each.place}`}</li>
+                       <li>{`date: ${each.date.slice(0,10)}`}</li>
+                       <li>{`time: ${each.date.slice(11,19)}`}</li>
+                    </ul>
+
+                  
+                  
+                  </li>)}
               </ul >
             </div>
             <form onSubmit={sumitToState}>
