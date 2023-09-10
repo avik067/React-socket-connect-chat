@@ -39,7 +39,7 @@ function App() {
   
   const conncetToSer = () => {
     
-            const socketInstance = io('http://localhost:5005/');
+            const socketInstance = io('https://my-socket-api.adaptable.app/');
             // https://my-socket-api.adaptable.app/
             // http://localhost:5005/
             setSocket(socketInstance);
