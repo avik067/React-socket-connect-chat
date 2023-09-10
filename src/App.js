@@ -36,22 +36,41 @@ function App() {
               }
   
        }
+
   
-  const conncetToSer = () => {
-    
+
+ ////////////////////////////
+ const getFromDb = async() => {
+          const url = "https://my-socket-api.adaptable.app/getsort"
+                try {
+                  const rowData = await fetch(url)
+                  const jsonData = await rowData.json()
+                  console.log(jsonData)
+                  jsonData.reverse() ;
+                  setSms({...sms,currentList:jsonData})
+                }
+                catch (e) {
+                  console.log(e)
+                }
+}
+ 
+
+
+  const conncetToSer =  () => {
+       
+           
+            getFromDb()    
             const socketInstance = io('https://my-socket-api.adaptable.app/');
             // https://my-socket-api.adaptable.app/
             // http://localhost:5005/
             setSocket(socketInstance);
             
               // listen for events emitted by the server
-            
-
               socketInstance.on("server" ,(msg)=> {
                 console.log(`from server : ${msg}`)
               })
-
-              
+            
+             
           return () => {
             if (socketInstance) {
               socketInstance.disconnect();
@@ -82,8 +101,8 @@ function App() {
                   // console.log(data);
                   const jsonDataBroad = JSON.parse(data)
                   console.log(jsonDataBroad)
-                
-                  setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
+                  getFromDb()
+                  
       });
     }
   } ,[socket])
