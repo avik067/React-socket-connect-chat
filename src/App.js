@@ -39,7 +39,7 @@ function App() {
   
   const conncetToSer = () => {
     
-            const socketInstance = io('https://my-socket-api.adaptable.app/');
+            const socketInstance = io('http://localhost:5005/');
             // https://my-socket-api.adaptable.app/
             // http://localhost:5005/
             setSocket(socketInstance);
@@ -62,6 +62,16 @@ function App() {
 
   useEffect(()=>{
     conncetToSer()
+     
+    if (socket) {
+      socket.on('broadcast', (data) => {
+                    // console.log(data);
+                    const jsonDataBroad = JSON.parse(data)
+                    console.log(jsonDataBroad)
+                  
+                    setSms({...sms,currentList:[...sms.currentList,jsonDataBroad]})
+        });
+      }
 
   } ,[])
 
