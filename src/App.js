@@ -90,6 +90,7 @@ function App() {
   } ,[])
 
 
+
   return (
           <div className="App">
             <div className='main-chat-box'>
@@ -102,8 +103,7 @@ function App() {
                     <ul className='info row apart'>
                        <li>{`name : ${each.name}`}</li>
                        <li>{`place : ${each.place}`}</li>
-                       <li>{`date: ${each.date.slice(0,10)}`}</li>
-                       <li>{`time: ${each.date.slice(11,19)}`}</li>
+                       <li>{`time UTC: ${each.date }`}</li>
                     </ul>
 
                   
